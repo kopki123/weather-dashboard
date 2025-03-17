@@ -8,6 +8,7 @@ import {
 } from './api/weather';
 import SearchBar from './components/SearchBar';
 import Loading from './components/Loading';
+import CurrentWeather from './components/CurrentWeather';
 
 function App() {
   const [city, setCity] = useState<string>('');
@@ -68,8 +69,6 @@ function App() {
           onSearch={handleSearch}
         />
 
-        {isLoading && 'Loading...'}
-
         {error &&
           <p className="text-red-500 mb-4">{error}</p>
         }
@@ -80,8 +79,13 @@ function App() {
           </div>
         ) : (
           <>
-            {locationData?.name}
-            {currentWeather?.time}
+            {currentWeather && locationData && (
+              <CurrentWeather
+                locationData={locationData}
+                currentWeather={currentWeather}
+              />
+            )}
+
             {dailyForecast?.map((item) => {
               return item.time;
             })}
