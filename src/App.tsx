@@ -1,7 +1,9 @@
 function App() {
   return (
     <>
-      Weather Dashboard
+      <h1 className="text-3xl text-red-100 font-bold underline">
+        Weather Dashboard
+      </h1>
     </>
   );
 }
