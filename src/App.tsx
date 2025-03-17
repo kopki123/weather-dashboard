@@ -7,6 +7,7 @@ import {
   getWeatherData
 } from './api/weather';
 import SearchBar from './components/SearchBar';
+import Loading from './components/Loading';
 
 function App() {
   const [city, setCity] = useState<string>('');
@@ -49,7 +50,7 @@ function App() {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if(!city) {
+    if (!city) {
       return;
     }
 
@@ -73,7 +74,19 @@ function App() {
           <p className="text-red-500 mb-4">{error}</p>
         }
 
-        {!isLoading && locationData && locationData.name}
+        {isLoading ? (
+          <div className='mt-4 flex justify-center items-center'>
+            <Loading />
+          </div>
+        ) : (
+          <>
+            {locationData?.name}
+            {currentWeather?.time}
+            {dailyForecast?.map((item) => {
+              return item.time;
+            })}
+          </>
+        )}
 
       </div>
     </div>
