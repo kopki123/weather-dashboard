@@ -9,6 +9,7 @@ import {
 import SearchBar from './components/SearchBar';
 import Loading from './components/Loading';
 import CurrentWeather from './components/CurrentWeather';
+import Forecast from './components/Forecast';
 
 function App() {
   const [city, setCity] = useState<string>('');
@@ -86,9 +87,11 @@ function App() {
               />
             )}
 
-            {dailyForecast?.map((item) => {
-              return item.time;
-            })}
+            {dailyForecast && (
+              <Forecast
+                dailyForecast={dailyForecast}
+              />
+            )}
           </>
         )}
 
