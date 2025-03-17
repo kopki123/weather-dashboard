@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   LocationData,
   CurrentWeatherData,
@@ -6,8 +6,10 @@ import {
   getLocationData,
   getWeatherData
 } from './api/weather';
+import SearchBar from './components/SearchBar';
 
 function App() {
+  const [city, setCity] = useState<string>('');
   const [locationData, setLocationData] = useState<LocationData | null>(null);
   const [currentWeather, setCurrentWeather] = useState<CurrentWeatherData | null>(null);
   const [dailyForecast, setDailyForecast] = useState<DailyForecast | null>(null);
@@ -44,20 +46,34 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    fetchWeatherForCity('taiwan');
-  }, []);
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if(!city) {
+      return;
+    }
+
+    await fetchWeatherForCity(city.trim());
+  };
 
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-gray-100">
       <div className="max-w-3xl mx-auto p-4 sm:p-6 bg-white shadow-md rounded-lg">
         <h1 className="text-3xl font-bold mb-4 text-center">Weather Dashboard</h1>
 
+        <SearchBar
+          city={city}
+          setCity={setCity}
+          onSearch={handleSearch}
+        />
+
+        {isLoading && 'Loading...'}
+
         {error &&
           <p className="text-red-500 mb-4">{error}</p>
         }
 
-        {locationData?.name}
+        {!isLoading && locationData && locationData.name}
 
       </div>
     </div>
