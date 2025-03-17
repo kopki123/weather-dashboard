@@ -3,7 +3,7 @@ function App() {
     <>
       Weather Dashboard
     </>
-  )
+  );
 }
 
-export default App
+export default App;
