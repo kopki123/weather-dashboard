@@ -30,34 +30,29 @@ export type DailyForecast = {
  * @returns Promise<LocationData | null>
  */
 export const getLocationData = async (city: string): Promise<LocationData | null> => {
-  try {
-    const response = await axiosInstance.get('https://geocoding-api.open-meteo.com/v1/search', {
-      params: {
-        name: city,
-      }
-    });
-
-    if (!response.data.results && response.data.results.length < 1) {
-      return null;
+  const response = await axiosInstance.get('https://geocoding-api.open-meteo.com/v1/search', {
+    params: {
+      name: city,
     }
+  });
 
-    const {
-      name,
-      country,
-      latitude,
-      longitude,
-    } = response.data.results[0];
-
-    return {
-      name,
-      country,
-      latitude,
-      longitude,
-    };
-  } catch (error) {
-    console.error('取得地理資訊時發生錯誤:', error);
+  if (!response.data.results && response.data.results.length < 1) {
     return null;
   }
+
+  const {
+    name,
+    country,
+    latitude,
+    longitude,
+  } = response.data.results[0];
+
+  return {
+    name,
+    country,
+    latitude,
+    longitude,
+  };
 };
 
 /**
@@ -71,47 +66,43 @@ export const getWeatherData = async (latitude: number, longitude: number): Promi
   currentWeather: CurrentWeatherData;
   dailyForecast: DailyForecast;
 } | null> => {
-  try {
-    const response = await axiosInstance.get('https://api.open-meteo.com/v1/forecast', {
-      params: {
-        latitude,
-        longitude,
-        daily: 'weather_code,temperature_2m_max,temperature_2m_min',
-        current: 'temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code',
-        forecast_days: 5
-      }
-    });
+  const response = await axiosInstance.get('https://api.open-meteo.com/v1/forecast', {
+    params: {
+      latitude,
+      longitude,
+      daily: 'weather_code,temperature_2m_max,temperature_2m_min',
+      current: 'temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code',
+      forecast_days: 5
+    }
+  });
 
-    const { current, daily } = response.data;
-    const {
-      temperature_2m: temperature,
-      relative_humidity_2m: humidity,
-      weather_code: weatherCode,
-      wind_speed_10m: windSpeed,
-      time
-    } = current;
+  const { current, daily } = response.data;
+  const {
+    temperature_2m: temperature,
+    relative_humidity_2m: humidity,
+    weather_code: weatherCode,
+    wind_speed_10m: windSpeed,
+    time
+  } = current;
 
-    const dailyForecast = daily.time.map((time: unknown, index: number) => {
-      return {
-        time,
-        weatherCode: daily.weather_code[index],
-        maxTemperature: daily.temperature_2m_max[index],
-        minTemperature: daily.temperature_2m_min[index],
-      };
-    });
-
+  const dailyForecast = daily.time.map((time: unknown, index: number) => {
     return {
-      dailyForecast,
-      currentWeather: {
-        temperature,
-        humidity,
-        weatherCode,
-        windSpeed,
-        time,
-      },
+      time,
+      weatherCode: daily.weather_code[index],
+      maxTemperature: daily.temperature_2m_max[index],
+      minTemperature: daily.temperature_2m_min[index],
     };
-  } catch (error) {
-    console.error('取得天氣資訊時發生錯誤:', error);
-    return null;
-  }
+  });
+
+  return {
+    dailyForecast,
+    currentWeather: {
+      temperature,
+      humidity,
+      weatherCode,
+      windSpeed,
+      time,
+    },
+  };
 };
+

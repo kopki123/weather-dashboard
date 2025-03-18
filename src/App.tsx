@@ -43,22 +43,26 @@ function App() {
 
     try {
       const location = await getLocationData(city);
+
       if (!location) {
         setError('找不到該城市');
         return;
       }
+
       setLocationData(location);
 
       const weatherData = await getWeatherData(location.latitude, location.longitude);
+
       if (!weatherData) {
         setError('無法取得天氣資訊');
         return;
       }
+
       setCurrentWeather(weatherData.currentWeather);
       setDailyForecast(weatherData.dailyForecast);
     } catch (err) {
       console.error(err);
-      setError('資料請求錯誤');
+      setError((err as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -93,10 +97,6 @@ function App() {
           onSelectCity={handleSelectFavorite}
         />
 
-        {error &&
-          <p className="text-red-500 mb-4">{error}</p>
-        }
-
         {isLoading ? (
           <div className='mt-4 flex justify-center items-center'>
             <Loading />
@@ -126,6 +126,10 @@ function App() {
             )}
           </>
         )}
+
+        {error &&
+          <p className="text-red-500 mb-4">{error}</p>
+        }
       </div>
     </div>
   );
