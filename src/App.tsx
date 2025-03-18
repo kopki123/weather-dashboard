@@ -67,7 +67,7 @@ function App() {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!city) {
+    if (!city.trim()) {
       return;
     }
 
@@ -89,13 +89,13 @@ function App() {
           onSearch={handleSearch}
         />
 
-        {error &&
-          <p className="text-red-500 mb-4">{error}</p>
-        }
-
         <FavoriteCities
           onSelectCity={handleSelectFavorite}
         />
+
+        {error &&
+          <p className="text-red-500 mb-4">{error}</p>
+        }
 
         {isLoading ? (
           <div className='mt-4 flex justify-center items-center'>
