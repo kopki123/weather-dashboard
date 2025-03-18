@@ -6,12 +6,13 @@ import {
   getLocationData,
   getWeatherData
 } from './api/weather';
+import { WeatherContext } from './contexts/WeatherContext';
 import SearchBar from './components/SearchBar';
 import Loading from './components/Loading';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
 import SwitchButton from './components/SwitchButton';
-import { WeatherContext } from './contexts/WeatherContext';
+import FavoriteCities from './components/FavoriteCities';
 
 function App() {
   const weatherCtx = useContext(WeatherContext);
@@ -73,6 +74,10 @@ function App() {
     await fetchWeatherForCity(city.trim());
   };
 
+  const handleSelectFavorite = async (selectedCity: string) => {
+    await fetchWeatherForCity(selectedCity);
+  };
+
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-gray-100">
       <div className="max-w-3xl mx-auto p-4 sm:p-6 bg-white shadow-md rounded-lg">
@@ -87,6 +92,10 @@ function App() {
         {error &&
           <p className="text-red-500 mb-4">{error}</p>
         }
+
+        <FavoriteCities
+          onSelectCity={handleSelectFavorite}
+        />
 
         {isLoading ? (
           <div className='mt-4 flex justify-center items-center'>

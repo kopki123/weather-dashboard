@@ -3,6 +3,7 @@ import { CurrentWeatherData, LocationData } from '../api/weather';
 import WeatherIcon from './WeatherIcon';
 import { WeatherContext } from '../contexts/WeatherContext';
 import { celsiusToFahrenheit } from '../utils/celsiusToFahrenheit';
+import { FaRegStar, FaStar } from 'react-icons/fa';
 
 interface CurrentWeatherProps {
   locationData: LocationData;
@@ -21,12 +22,23 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
 
   const {
     temperatureUnit,
+    favorites,
+    addFavorite,
+    removeFavorite,
   } = weatherCtx;
-
 
   const { name, country } = locationData;
   const { temperature, humidity, weatherCode, windSpeed } = currentWeather;
   const displayTemperature = temperatureUnit === 'C' ? Math.round(temperature) : celsiusToFahrenheit(temperature);
+  const isFavorite = favorites.includes(locationData.name);
+
+  const handleToggleFavorite = () => {
+    if(isFavorite) {
+      removeFavorite(name);
+    } else {
+      addFavorite(name);
+    }
+  };
 
   return (
     <div
@@ -37,6 +49,17 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
       "
     >
       <div className="mb-2 flex items-center text-2xl font-semibold">
+        <button
+          className="mr-2 hover:scale-105 hover:cursor-pointer"
+          onClick={handleToggleFavorite}
+        >
+          {isFavorite ? (
+            <FaStar size={20} className="text-yellow-500" />
+          ) : (
+            <FaRegStar size={20} className="text-gray-400" />
+          )}
+        </button>
+
         <p>{name}, {country}</p>
       </div>
 
