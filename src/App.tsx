@@ -10,6 +10,7 @@ import SearchBar from './components/SearchBar';
 import Loading from './components/Loading';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
+import SwitchButton from './components/SwitchButton';
 
 function App() {
   const [city, setCity] = useState<string>('');
@@ -80,6 +81,13 @@ function App() {
           </div>
         ) : (
           <>
+            {currentWeather && (
+              <SwitchButton
+                onLabel='°C'
+                offLabel='°F'
+              />
+            )}
+
             {currentWeather && locationData && (
               <CurrentWeather
                 locationData={locationData}
@@ -94,7 +102,6 @@ function App() {
             )}
           </>
         )}
-
       </div>
     </div>
   );
