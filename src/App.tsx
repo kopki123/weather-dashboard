@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   LocationData,
   CurrentWeatherData,
@@ -11,9 +11,22 @@ import Loading from './components/Loading';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
 import SwitchButton from './components/SwitchButton';
+import { WeatherContext } from './contexts/WeatherContext';
 
 function App() {
-  const [city, setCity] = useState<string>('');
+  const weatherCtx = useContext(WeatherContext);
+
+  if (!weatherCtx) {
+    throw new Error('WeatherContext must be used within a WeatherProvider');
+  }
+
+  const {
+    city,
+    temperatureUnit,
+    setCity,
+    toggleTemperatureUnit,
+  } = weatherCtx;
+
   const [locationData, setLocationData] = useState<LocationData | null>(null);
   const [currentWeather, setCurrentWeather] = useState<CurrentWeatherData | null>(null);
   const [dailyForecast, setDailyForecast] = useState<DailyForecast | null>(null);
@@ -85,6 +98,8 @@ function App() {
               <SwitchButton
                 onLabel='°C'
                 offLabel='°F'
+                initial={temperatureUnit === 'C'}
+                onToggle={toggleTemperatureUnit}
               />
             )}
 

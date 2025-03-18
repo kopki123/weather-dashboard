@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { CurrentWeatherData, LocationData } from '../api/weather';
 import WeatherIcon from './WeatherIcon';
+import { WeatherContext } from '../contexts/WeatherContext';
+import { celsiusToFahrenheit } from '../utils/celsiusToFahrenheit';
 
 interface CurrentWeatherProps {
   locationData: LocationData;
@@ -11,8 +13,20 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   locationData,
   currentWeather,
 }) => {
+  const weatherCtx = useContext(WeatherContext);
+
+  if (!weatherCtx) {
+    throw new Error('WeatherContext must be used within a WeatherProvider');
+  }
+
+  const {
+    temperatureUnit,
+  } = weatherCtx;
+
+
   const { name, country } = locationData;
   const { temperature, humidity, weatherCode, windSpeed } = currentWeather;
+  const displayTemperature = temperatureUnit === 'C' ? Math.round(temperature) : celsiusToFahrenheit(temperature);
 
   return (
     <div
@@ -32,7 +46,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
             weatherCode={weatherCode}
             className='w-20 h-20'
           />
-          <p className="text-4xl">{temperature}°C</p>
+          <p className="text-4xl">{displayTemperature}°{temperatureUnit}</p>
         </div>
 
         <div>
