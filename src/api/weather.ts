@@ -36,7 +36,7 @@ export const getLocationData = async (city: string): Promise<LocationData | null
     }
   });
 
-  if (!response.data.results && response.data.results.length < 1) {
+  if (!response.data.results || response.data.results.length < 1) {
     return null;
   }
 
