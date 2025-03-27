@@ -31,7 +31,7 @@ axiosInstance.interceptors.response.use((response: AxiosResponse) => {
       break;
   }
 
-  throw new Error(message);
+  throw new AxiosError(message);
 });
 
 export default axiosInstance;
