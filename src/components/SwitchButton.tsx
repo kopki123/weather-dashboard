@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface SwitchButtonProps {
   onLabel?: string;
@@ -13,13 +13,6 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
   initial = false,
   onToggle,
 }) => {
-  const [isOn, setIsOn] = useState(initial);
-
-  const toggleSwitch = () => {
-    setIsOn((prev) => !prev);
-    onToggle?.();
-  };
-
   return (
     <button
       className={
@@ -28,10 +21,10 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
           rounded-full
           transition-colors duration-300
           focus:outline-none hover:cursor-pointer
-          ${isOn ? 'bg-blue-200' : 'bg-gray-300'}
+          ${initial ? 'bg-blue-200' : 'bg-gray-300'}
         `
       }
-      onClick={toggleSwitch}
+      onClick={onToggle}
     >
       <div
         className={
@@ -40,7 +33,7 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
             w-8 h-8
             bg-white rounded-full shadow-md
             transform transition-transform duration-300
-            ${isOn ? 'translate-x-10' : 'translate-x-0'}
+            ${initial ? 'translate-x-10' : 'translate-x-0'}
           `
         }
       />
@@ -50,11 +43,11 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
           `
             absolute top-1/4
             text-sm font-medium
-            ${isOn ? 'left-3' : 'right-3'}
+            ${initial ? 'left-3' : 'right-3'}
           `
         }
       >
-        {isOn ? onLabel : offLabel}
+        {initial ? onLabel : offLabel}
       </span>
     </button>
   );

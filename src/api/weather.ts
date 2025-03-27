@@ -105,4 +105,3 @@ export const getWeatherData = async (latitude: number, longitude: number): Promi
     },
   };
 };
-

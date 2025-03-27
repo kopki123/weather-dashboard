@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import {
   LocationData,
   CurrentWeatherData,
@@ -34,7 +34,7 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  const fetchWeatherForCity = async (city: string) => {
+  const fetchWeatherForCity = useCallback(async (city: string) => {
     setLocationData(null);
     setCurrentWeather(null);
     setDailyForecast(null);
@@ -66,7 +66,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,7 +103,7 @@ function App() {
           </div>
         ) : (
           <>
-            {currentWeather && (
+            {currentWeather && locationData && (
               <SwitchButton
                 onLabel='°C'
                 offLabel='°F'

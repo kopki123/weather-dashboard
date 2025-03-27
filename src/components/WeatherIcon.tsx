@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { getWeatherCondition } from '../utils/getWeatherCondition';
 
 interface WeatherIconProps {
@@ -7,7 +7,10 @@ interface WeatherIconProps {
 }
 
 const WeatherIcon: React.FC<WeatherIconProps> = ({ weatherCode, className }) => {
-  const { image, description } = getWeatherCondition(weatherCode);
+  const { 
+    image,
+    description,
+  } = useMemo(() => getWeatherCondition(weatherCode), [weatherCode]);
 
   return (
     <img

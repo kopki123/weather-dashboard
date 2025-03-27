@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { CurrentWeatherData, LocationData } from '../api/weather';
 import WeatherIcon from './WeatherIcon';
 import { WeatherContext } from '../contexts/WeatherContext';
@@ -29,7 +29,13 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
 
   const { name, country } = locationData;
   const { temperature, humidity, weatherCode, windSpeed } = currentWeather;
-  const displayTemperature = temperatureUnit === 'C' ? Math.round(temperature) : celsiusToFahrenheit(temperature);
+  
+  const displayTemperature = useMemo(() => {
+    return temperatureUnit === 'C' 
+      ? Math.round(temperature)
+      : celsiusToFahrenheit(temperature);
+  }, [temperature, temperatureUnit]);
+
   const isFavorite = favorites.includes(locationData.name);
 
   const handleToggleFavorite = () => {
