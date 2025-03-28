@@ -29,6 +29,8 @@ axiosInstance.interceptors.response.use((response: AxiosResponse) => {
     case 'ECONNABORTED':
       message = errorMessages[RestRequestErrorCode.TIMEOUT];
       break;
+    default:
+      message = errorMessages[RestRequestErrorCode.UNKNOWN];
   }
 
   throw new AxiosError(message);
