@@ -104,19 +104,19 @@ function App() {
         ) : (
           <>
             {currentWeather && locationData && (
-              <SwitchButton
-                onLabel='°C'
-                offLabel='°F'
-                initial={temperatureUnit === 'C'}
-                onToggle={toggleTemperatureUnit}
-              />
-            )}
+              <>
+                <SwitchButton
+                  onLabel='°C'
+                  offLabel='°F'
+                  initial={temperatureUnit === 'C'}
+                  onToggle={toggleTemperatureUnit}
+                />
 
-            {currentWeather && locationData && (
-              <CurrentWeather
-                locationData={locationData}
-                currentWeather={currentWeather}
-              />
+                <CurrentWeather
+                  locationData={locationData}
+                  currentWeather={currentWeather}
+                />
+              </>
             )}
 
             {dailyForecast && (
