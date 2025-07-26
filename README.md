@@ -1,4 +1,4 @@
-# [Live Weather Dashboard](<https://weather-dashboard-sepia-one.vercel.app/>)
+# [Weather Dashboard](<https://weather-dashboard-sepia-one.vercel.app/>)
 
 ## 專案描述
 Weather Dashboard是一個用於顯示城市的即時天氣資訊和五日天氣預報的網頁應用程式。
