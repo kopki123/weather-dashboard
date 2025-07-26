@@ -83,9 +83,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 bg-gray-100">
-      <div className="max-w-3xl mx-auto p-4 sm:p-6 bg-white shadow-md rounded-lg">
-        <h1 className="text-3xl font-bold mb-4 text-center">Weather Dashboard</h1>
+    <div className='min-h-screen p-4 sm:p-6 bg-gray-100'>
+      <div className='max-w-3xl mx-auto p-4 sm:p-6 bg-white shadow-md rounded-lg'>
+        <h1 className='text-3xl font-bold mb-4 text-center'>Weather Dashboard</h1>
 
         <SearchBar
           city={city}
@@ -128,7 +128,9 @@ function App() {
         )}
 
         {error &&
-          <p className="text-red-500 mb-4">{error}</p>
+          <p className='text-red-500 mb-4'>
+            {error}
+          </p>
         }
       </div>
     </div>

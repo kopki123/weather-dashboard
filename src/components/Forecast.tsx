@@ -23,19 +23,20 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
 
   return (
     <div>
-      <h3 className="mb-2 text-xl font-semibold">每日預報</h3>
+      <h3 className='mb-2 text-xl font-semibold'>每日預報</h3>
 
-      <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-5">
+      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-5'>
         {dailyForecast.map(({ maxTemperature, minTemperature, weatherCode, time }) => {
-          const displayMaxTemp = temperatureUnit === 'C' ? Math.round(maxTemperature) : celsiusToFahrenheit(maxTemperature);
-          const displayMinTemp = temperatureUnit === 'C' ? Math.round(minTemperature) : celsiusToFahrenheit(minTemperature);
+          const isTemperatureUnitCelsius = temperatureUnit === 'C';
+          const displayMaxTemp = isTemperatureUnitCelsius ? Math.round(maxTemperature) : celsiusToFahrenheit(maxTemperature);
+          const displayMinTemp = isTemperatureUnitCelsius ? Math.round(minTemperature) : celsiusToFahrenheit(minTemperature);
           const weekdayName = getWeekdayName(new Date(time));
           const date = new Date(time).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric' });
 
           return (
             <div
               key={time}
-              className="
+              className='
                 p-2
                 flex justify-between items-center
                 md:flex-col
@@ -43,14 +44,14 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
                 rounded-lg
                 transform transition-all duration-500
                 opacity-0 animate-fadeIn
-              "
+              '
             >
               <div className='md:text-center'>
-                <p className="mb-2 text-sm font-semibold">
+                <p className='mb-2 text-sm font-semibold'>
                   {weekdayName}
                 </p>
 
-                <p className="text-xs text-gray-700">
+                <p className='text-xs text-gray-700'>
                   {date}
                 </p>
               </div>
@@ -60,7 +61,13 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
                 className='w-16 h-16'
               />
 
-              <div className='flex flex-col md:flex-row justify-between items-center gap-2 text-xs'>
+              <div
+                className='
+                    flex flex-col justify-between items-center gap-2
+                    md:flex-row
+                    text-xs
+                  '
+                >
                 <p>{displayMaxTemp}°</p>
                 <p className='text-gray-700'>{displayMinTemp}°</p>
               </div>

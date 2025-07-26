@@ -10,20 +10,20 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ city, setCity, onSearch }) => {
   return (
     <form
-      className="mb-4 flex"
+      className='mb-4 flex'
       onSubmit={onSearch}
     >
       <input
-        type="text"
+        type='text'
         value={city}
-        placeholder="請輸入城市名稱"
-        className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none"
+        placeholder='請輸入城市名稱'
+        className='flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none'
         onChange={(e) => setCity(e.target.value)}
       />
 
       <button
-        type="submit"
-        className="bg-gray-300 text-white p-3 rounded-r-lg"
+        type='submit'
+        className='bg-gray-300 text-white p-3 rounded-r-lg'
         disabled={!city}
       >
         <FaSearch />

@@ -13,6 +13,8 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
   initial = false,
   onToggle,
 }) => {
+  const currentLabel = initial ? onLabel : offLabel;
+
   return (
     <button
       className={
@@ -47,7 +49,7 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
           `
         }
       >
-        {initial ? onLabel : offLabel}
+        {currentLabel}
       </span>
     </button>
   );

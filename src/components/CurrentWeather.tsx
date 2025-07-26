@@ -27,11 +27,20 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
     removeFavorite,
   } = weatherCtx;
 
-  const { name, country } = locationData;
-  const { temperature, humidity, weatherCode, windSpeed } = currentWeather;
-  
+  const {
+    name,
+    country,
+  } = locationData;
+
+  const {
+    temperature,
+    humidity,
+    weatherCode,
+    windSpeed,
+  } = currentWeather;
+
   const displayTemperature = useMemo(() => {
-    return temperatureUnit === 'C' 
+    return temperatureUnit === 'C'
       ? Math.round(temperature)
       : celsiusToFahrenheit(temperature);
   }, [temperature, temperatureUnit]);
@@ -48,21 +57,27 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
 
   return (
     <div
-      className="
+      className='
         my-4
         transform transition-all duration-500
         opacity-0 animate-fadeIn
-      "
+      '
     >
-      <div className="mb-2 flex items-center text-2xl font-semibold">
+      <div className='mb-2 flex items-center text-2xl font-semibold'>
         <button
-          className="mr-2 hover:scale-105 hover:cursor-pointer"
+          className='mr-2 hover:scale-105 hover:cursor-pointer'
           onClick={handleToggleFavorite}
         >
           {isFavorite ? (
-            <FaStar size={20} className="text-yellow-500" />
+            <FaStar
+              size={20}
+              className='text-yellow-500'
+            />
           ) : (
-            <FaRegStar size={20} className="text-gray-400" />
+            <FaRegStar
+              size={20}
+              className='text-gray-400'
+            />
           )}
         </button>
 
@@ -75,12 +90,19 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
             weatherCode={weatherCode}
             className='w-20 h-20'
           />
-          <p className="text-4xl">{displayTemperature}°{temperatureUnit}</p>
+          <p className='text-4xl'>
+            {displayTemperature}°{temperatureUnit}
+          </p>
         </div>
 
         <div>
-          <p className="text-xs">風速：{windSpeed} km/h</p>
-          <p className="text-xs">濕度：{humidity} %</p>
+          <p className='text-xs'>
+            風速：{windSpeed} km/h
+          </p>
+
+          <p className='text-xs'>
+            濕度：{humidity} %
+          </p>
         </div>
       </div>
     </div>
