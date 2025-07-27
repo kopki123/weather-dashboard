@@ -21,13 +21,15 @@ const mockCurrentWeather = {
 describe('CurrentWeather 元件', () => {
   it('在攝氏模式下正確呈現', () => {
     const contextValue = {
+      locale: 'zh' as const,
       city: '',
-      setCity: jest.fn(),
       temperatureUnit: 'C',
-      toggleTemperatureUnit: jest.fn(),
       favorites: [],
+      setCity: jest.fn(),
+      setLocale: jest.fn(),
       addFavorite: jest.fn(),
       removeFavorite: jest.fn(),
+      toggleTemperatureUnit: jest.fn(),
     };
 
     render(
@@ -46,13 +48,15 @@ describe('CurrentWeather 元件', () => {
 
   it('在華氏模式下正確呈現', () => {
     const contextValue = {
+      locale: 'zh' as const,
       city: '',
-      setCity: jest.fn(),
       temperatureUnit: 'F' as const,
-      toggleTemperatureUnit: jest.fn(),
       favorites: [],
+      setLocale: jest.fn(),
+      setCity: jest.fn(),
       addFavorite: jest.fn(),
       removeFavorite: jest.fn(),
+      toggleTemperatureUnit: jest.fn(),
     };
 
     render(
