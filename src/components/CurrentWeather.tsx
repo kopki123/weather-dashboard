@@ -1,9 +1,10 @@
 import React, { useContext, useMemo } from 'react';
+import { FaRegStar, FaStar } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import { CurrentWeatherData, LocationData } from '../api/weather';
 import WeatherIcon from './WeatherIcon';
 import { WeatherContext } from '../contexts/WeatherContext';
 import { celsiusToFahrenheit } from '../utils/celsiusToFahrenheit';
-import { FaRegStar, FaStar } from 'react-icons/fa';
 
 interface CurrentWeatherProps {
   locationData: LocationData;
@@ -14,6 +15,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   locationData,
   currentWeather,
 }) => {
+  const { t } = useTranslation();
   const weatherCtx = useContext(WeatherContext);
 
   if (!weatherCtx) {
@@ -97,11 +99,11 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
 
         <div>
           <p className='text-xs'>
-            風速：{windSpeed} km/h
+            {t('wind_speed')}：{windSpeed} {t('km/h')}
           </p>
 
           <p className='text-xs'>
-            濕度：{humidity} %
+            {t('humidity')}：{humidity} %
           </p>
         </div>
       </div>

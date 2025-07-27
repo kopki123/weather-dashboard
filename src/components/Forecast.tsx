@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import WeatherIcon from './WeatherIcon';
 import getWeekdayName from '../utils/getWeekdayName';
 import { DailyForecast } from '../api/weather';
@@ -10,6 +11,7 @@ interface ForecastProps {
 }
 
 const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
+  const { t } = useTranslation();
   const weatherCtx = useContext(WeatherContext);
 
   if (!weatherCtx) {
@@ -23,7 +25,9 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
 
   return (
     <div>
-      <h3 className='mb-2 text-xl font-semibold'>每日預報</h3>
+      <h3 className='mb-2 text-xl font-semibold'>
+        {t('daily_forecast')}
+      </h3>
 
       <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-5'>
         {dailyForecast.map(({ maxTemperature, minTemperature, weatherCode, time }) => {
@@ -48,7 +52,7 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
             >
               <div className='md:text-center'>
                 <p className='mb-2 text-sm font-semibold'>
-                  {weekdayName}
+                  {t(weekdayName)}
                 </p>
 
                 <p className='text-xs text-gray-700'>

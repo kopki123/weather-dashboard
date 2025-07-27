@@ -1,5 +1,6 @@
 import React, { FormEvent } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 interface SearchBarProps {
   city: string;
@@ -8,6 +9,8 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ city, setCity, onSearch }) => {
+  const { t } = useTranslation();
+
   return (
     <form
       className='mb-4 flex'
@@ -16,7 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ city, setCity, onSearch }) => {
       <input
         type='text'
         value={city}
-        placeholder='請輸入城市名稱'
+        placeholder={t('search_placeholder')}
         className='flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none'
         onChange={(e) => setCity(e.target.value)}
       />

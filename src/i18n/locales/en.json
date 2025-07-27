@@ -1,0 +1,21 @@
+{
+  "language": "English",
+  "lang_code": "en",
+  "title": "Weather Dashboard",
+  "search_placeholder": "Please enter a city name",
+  "commonly_used_cities": "Commonly Used Cities",
+  "no_favorites_added_yet": "No favorites added yet",
+  "wind_speed": "Wind",
+  "km/h": "km/h",
+  "humidity": "Humidity",
+  "daily_forecast": "Daily Forecast",
+  "sunday": "Sun",
+  "monday": "Mon",
+  "tuesday": "Tue",
+  "wednesday": "Wed",
+  "thursday": "Thu",
+  "friday": "Fri",
+  "saturday": "Sat",
+  "city_not_found": "City not found",
+  "unable_to_retrieve_weather_information": "Unable to retrieve weather information"
+}

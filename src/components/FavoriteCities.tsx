@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import { WeatherContext } from '../contexts/WeatherContext';
 
 interface FavoriteCitiesProps {
@@ -9,6 +10,7 @@ interface FavoriteCitiesProps {
 const FavoriteCities: React.FC<FavoriteCitiesProps> = ({
   onSelectCity,
 }) => {
+  const { t } = useTranslation();
   const weatherCtx = useContext(WeatherContext);
 
   if (!weatherCtx) {
@@ -22,10 +24,10 @@ const FavoriteCities: React.FC<FavoriteCitiesProps> = ({
 
   return (
     <div className='my-4 p-4 shadow-md rounded-md bg-gray-100'>
-      <h2 className='font-bold mb-2'>常用城市</h2>
+      <h2 className='font-bold mb-2'>{t('commonly_used_cities')}</h2>
 
       {favorites.length === 0 ? (
-        <p className='text-sm text-gray-500'>尚未加入收藏</p>
+        <p className='text-sm text-gray-500'>{t('no_favorites_added_yet')}</p>
       ) : (
         <ul>
           {favorites.map((city) => (

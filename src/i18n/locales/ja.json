@@ -1,0 +1,21 @@
+{
+  "language": "日本語",
+  "lang_code": "ja",
+  "title": "天気ダッシュボード",
+  "search_placeholder": "都市名を入力してください",
+  "commonly_used_cities": "よく使われる都市",
+  "no_favorites_added_yet": "お気に入りはまだ追加されていません",
+  "wind_speed": "風速",
+  "km/h": "km/h",
+  "humidity": "湿度",
+  "daily_forecast": "日別予報",
+  "sunday": "日曜日",
+  "monday": "月曜日",
+  "tuesday": "火曜日",
+  "wednesday": "水曜日",
+  "thursday": "木曜日",
+  "friday": "金曜日",
+  "saturday": "土曜日",
+  "city_not_found": "都市が見つかりません",
+  "unable_to_retrieve_weather_information": "天気情報を取得できません"
+}
