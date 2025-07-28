@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import i18n from '../i18n/i18n';
 
 export type Locale = ('en' | 'zh');
 
@@ -35,6 +36,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({ children }) =>
 
   useEffect(() => {
     localStorage.setItem('locale', JSON.stringify(locale));
+    i18n.changeLanguage(locale);
   }, [locale]);
 
   const toggleTemperatureUnit = () => {

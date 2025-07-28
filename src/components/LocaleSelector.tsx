@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Select from './Select';
-import i18n, { SUPPORT_LOCALES } from '../i18n/i18n';
+import { SUPPORT_LOCALES } from '../i18n/i18n';
 import { Locale, WeatherContext, WeatherContextType } from '../contexts/WeatherContext';
 
 interface LocaleSelectorProps {
@@ -21,17 +21,12 @@ const LocaleSelector: React.FC<LocaleSelectorProps> = ({
     setLocale,
   } = weatherCtx as WeatherContextType;
 
-  const handleChange = (value: string) => {
-    setLocale(value as Locale);
-    i18n.changeLanguage(value);
-  };
-
   return (
     <Select
       className={className}
       value={locale}
       options={SUPPORT_LOCALES}
-      onChange={handleChange}
+      onChange={(value) => setLocale(value as Locale)}
     />
   );
 };
