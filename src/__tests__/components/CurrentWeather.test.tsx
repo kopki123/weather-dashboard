@@ -11,17 +11,18 @@ const mockLocationData = {
 };
 
 const mockCurrentWeather = {
+  time: '2025-03-16T12:00:00Z',
   temperature: 25,
   windSpeed: 5,
   weatherCode: 1,
   humidity: 60,
-  time: '2025-03-16T12:00:00Z',
+  precipitationProbability: 10,
 };
 
 describe('CurrentWeather 元件', () => {
   it('在攝氏模式下正確呈現', () => {
     const contextValue = {
-      locale: 'zh' as const,
+      locale: 'zh-TW' as const,
       city: '',
       temperatureUnit: 'C',
       favorites: [],
@@ -48,7 +49,7 @@ describe('CurrentWeather 元件', () => {
 
   it('在華氏模式下正確呈現', () => {
     const contextValue = {
-      locale: 'zh' as const,
+      locale: 'zh-TW' as const,
       city: '',
       temperatureUnit: 'F' as const,
       favorites: [],
