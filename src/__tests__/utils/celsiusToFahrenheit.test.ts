@@ -1,4 +1,4 @@
-import { celsiusToFahrenheit } from '../../utils/celsiusToFahrenheit';
+import celsiusToFahrenheit from '../../utils/celsiusToFahrenheit';
 
 describe('攝氏轉華氏函式', () => {
   it('將 0°C 轉換成 32°F', () => {

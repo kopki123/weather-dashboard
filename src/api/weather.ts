@@ -8,18 +8,29 @@ export interface LocationData {
 }
 
 export interface CurrentWeatherData {
-  temperature: number;
-  windSpeed: number;
-  weatherCode: number;
-  humidity: number;
   time: string;
+  weatherCode: number;
+  temperature: number;
+  humidity: number;
+  windSpeed: number;
+  precipitationProbability: number;
 }
 
 export type DailyForecast = {
   time: string;
+  weatherCode: number;
   maxTemperature: number;
   minTemperature: number;
+}[];
+
+export type HourlyForecast = {
+  time: string;
   weatherCode: number;
+  temperature: number;
+  humidity: number;
+  windSpeed: number;
+  windDirection: number;
+  precipitationProbability: number;
 }[];
 
 /**
@@ -65,25 +76,51 @@ export const getLocationData = async (city: string): Promise<LocationData | null
 export const getWeatherData = async (latitude: number, longitude: number): Promise<{
   currentWeather: CurrentWeatherData;
   dailyForecast: DailyForecast;
+  hourlyForecast: HourlyForecast;
 } | null> => {
   const response = await axiosInstance.get('https://api.open-meteo.com/v1/forecast', {
     params: {
       latitude,
       longitude,
+      hourly: 'relative_humidity_2m,wind_speed_10m,temperature_2m,wind_direction_10m,weather_code,precipitation_probability',
       daily: 'weather_code,temperature_2m_max,temperature_2m_min',
-      current: 'temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code',
-      forecast_days: 5
+      forecast_days: 8,
     }
   });
 
-  const { current, daily } = response.data;
   const {
-    temperature_2m: temperature,
-    relative_humidity_2m: humidity,
-    weather_code: weatherCode,
-    wind_speed_10m: windSpeed,
-    time
-  } = current;
+    daily,
+    hourly,
+  } = response.data;
+
+  const currentTimestamp = Date.now();
+  const nextHourlyTimeIndex = (hourly.time as string[]).findIndex((time: string) => (new Date(time).getTime()) - currentTimestamp > 0);
+  const currentHourlyTimeIndex = nextHourlyTimeIndex - 1;
+
+  const currentWeather = {
+    time: hourly.time[currentHourlyTimeIndex],
+    weatherCode: hourly.weather_code[currentHourlyTimeIndex],
+    temperature: hourly.temperature_2m[currentHourlyTimeIndex],
+    humidity: hourly.relative_humidity_2m[currentHourlyTimeIndex],
+    windSpeed: hourly.wind_speed_10m[currentHourlyTimeIndex],
+    windDirection: hourly.wind_direction_10m[currentHourlyTimeIndex],
+    precipitationProbability: hourly.precipitation_probability[currentHourlyTimeIndex],
+  };
+
+  const hourlyForecast = hourly.time
+    .slice(currentHourlyTimeIndex)
+    .filter((_item: unknown, index: number) => index % 3 === 0)
+    .map((time: unknown, index: number) => {
+      return {
+        time,
+        weatherCode: hourly.weather_code[index],
+        temperature: hourly.temperature_2m[index],
+        humidity: hourly.relative_humidity_2m[index],
+        windSpeed: hourly.wind_speed_10m[index],
+        windDirection: hourly.wind_direction_10m[index],
+        precipitationProbability: hourly.precipitation_probability[index],
+      };
+    });
 
   const dailyForecast = daily.time.map((time: unknown, index: number) => {
     return {
@@ -95,13 +132,8 @@ export const getWeatherData = async (latitude: number, longitude: number): Promi
   });
 
   return {
+    currentWeather,
+    hourlyForecast,
     dailyForecast,
-    currentWeather: {
-      temperature,
-      humidity,
-      weatherCode,
-      windSpeed,
-      time,
-    },
   };
 };

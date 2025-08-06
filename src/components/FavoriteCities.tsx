@@ -24,7 +24,9 @@ const FavoriteCities: React.FC<FavoriteCitiesProps> = ({
 
   return (
     <div className='my-4 p-4 shadow-md rounded-md bg-gray-100'>
-      <h2 className='font-bold mb-2'>{t('commonly_used_cities')}</h2>
+      <h2 className='mb-2 font-bold'>
+        {t('commonly_used_cities')}
+      </h2>
 
       {favorites.length === 0 ? (
         <p className='text-sm text-gray-500'>{t('no_favorites_added_yet')}</p>

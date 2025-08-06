@@ -1,16 +1,22 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import WeatherIcon from './WeatherIcon';
-import getWeekdayName from '../utils/getWeekdayName';
 import { DailyForecast } from '../api/weather';
 import { WeatherContext } from '../contexts/WeatherContext';
-import { celsiusToFahrenheit } from '../utils/celsiusToFahrenheit';
+import getWeekdayName from '../utils/getWeekdayName';
+import celsiusToFahrenheit from '../utils/celsiusToFahrenheit';
+import WeatherIcon from './WeatherIcon';
 
 interface ForecastProps {
+  selectedTime: string;
   dailyForecast: DailyForecast;
+  onClick: (time: string) => void;
 }
 
-const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
+const Forecast: React.FC<ForecastProps> = ({
+  selectedTime,
+  dailyForecast,
+  onClick,
+}) => {
   const { t } = useTranslation();
   const weatherCtx = useContext(WeatherContext);
 
@@ -22,15 +28,13 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
     temperatureUnit,
   } = weatherCtx;
 
+  const currentDate = new Date(selectedTime).getDate();
+  const currentDateIndex = dailyForecast.findIndex(({ time }) => currentDate === new Date(time).getDate());
 
   return (
-    <div>
-      <h3 className='mb-2 text-xl font-semibold'>
-        {t('daily_forecast')}
-      </h3>
-
-      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-5'>
-        {dailyForecast.map(({ maxTemperature, minTemperature, weatherCode, time }) => {
+    <div className='mt-8'>
+      <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-8'>
+        {dailyForecast.map(({ maxTemperature, minTemperature, weatherCode, time }, index) => {
           const isTemperatureUnitCelsius = temperatureUnit === 'C';
           const displayMaxTemp = isTemperatureUnitCelsius ? Math.round(maxTemperature) : celsiusToFahrenheit(maxTemperature);
           const displayMinTemp = isTemperatureUnitCelsius ? Math.round(minTemperature) : celsiusToFahrenheit(minTemperature);
@@ -40,22 +44,27 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
           return (
             <div
               key={time}
-              className='
-                p-2
-                flex justify-between items-center
-                md:flex-col
-                bg-blue-100
-                rounded-lg
-                transform transition-all duration-500
-                opacity-0 animate-fadeIn
-              '
+              className={
+                `
+                  animate-fadeIn
+                  p-2
+                  md:p-1
+                  flex justify-between items-center
+                  md:flex-col
+                  rounded-lg
+                  opacity-0
+                  transform transition-all duration-500
+                  ${currentDateIndex === index ? 'bg-blue-100' : 'bg-blue-100/70 cursor-pointer'}
+                `
+              }
+              onClick={() => onClick(time)}
             >
               <div className='md:text-center'>
                 <p className='mb-2 text-sm font-semibold'>
                   {t(weekdayName)}
                 </p>
 
-                <p className='text-xs text-gray-700'>
+                <p className='text-xs text-gray-500'>
                   {date}
                 </p>
               </div>
@@ -73,7 +82,10 @@ const Forecast: React.FC<ForecastProps> = ({ dailyForecast }) => {
                   '
                 >
                 <p>{displayMaxTemp}°</p>
-                <p className='text-gray-700'>{displayMinTemp}°</p>
+
+                <p className='text-gray-500'>
+                  {displayMinTemp}°
+                </p>
               </div>
             </div>
           );

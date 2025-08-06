@@ -2,9 +2,10 @@ import React, { useContext, useMemo } from 'react';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { CurrentWeatherData, LocationData } from '../api/weather';
-import WeatherIcon from './WeatherIcon';
 import { WeatherContext } from '../contexts/WeatherContext';
-import { celsiusToFahrenheit } from '../utils/celsiusToFahrenheit';
+import celsiusToFahrenheit from '../utils/celsiusToFahrenheit';
+import formatTimeIntl from '../utils/formatTimeIntl';
+import WeatherIcon from './WeatherIcon';
 
 interface CurrentWeatherProps {
   locationData: LocationData;
@@ -23,6 +24,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   }
 
   const {
+    locale,
     temperatureUnit,
     favorites,
     addFavorite,
@@ -35,11 +37,17 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   } = locationData;
 
   const {
+    time,
     temperature,
     humidity,
     weatherCode,
     windSpeed,
+    precipitationProbability,
   } = currentWeather;
+
+  const isFavorite = favorites.includes(locationData.name);
+
+  const formattedTime = useMemo(() => formatTimeIntl(time, locale), [time, locale]);
 
   const displayTemperature = useMemo(() => {
     return temperatureUnit === 'C'
@@ -47,10 +55,8 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
       : celsiusToFahrenheit(temperature);
   }, [temperature, temperatureUnit]);
 
-  const isFavorite = favorites.includes(locationData.name);
-
   const handleToggleFavorite = () => {
-    if(isFavorite) {
+    if (isFavorite) {
       removeFavorite(name);
     } else {
       addFavorite(name);
@@ -86,25 +92,53 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
         <p>{name}, {country}</p>
       </div>
 
-      <div className='flex flex-col sm:flex-row sm:items-center gap-6'>
+      <div className='mt-4 flex flex-col sm:flex-row sm:items-center gap-6'>
         <div className='flex items-center gap-2'>
           <WeatherIcon
             weatherCode={weatherCode}
             className='w-20 h-20'
           />
+
           <p className='text-4xl'>
             {displayTemperature}°{temperatureUnit}
           </p>
         </div>
 
-        <div>
-          <p className='text-xs'>
-            {t('wind_speed')}：{windSpeed} {t('km/h')}
-          </p>
+        <div
+          className='
+            grow self-start
+            w-full sm:w-auto
+            flex justify-between
+            text-gray-500
+          '
+        >
+          <div className='flex flex-col'>
+            <p className='text-xs'>
+              {t('precipitation_probability')}：{precipitationProbability}%
+            </p>
 
-          <p className='text-xs'>
-            {t('humidity')}：{humidity} %
-          </p>
+            <p className='text-xs'>
+              {t('humidity')}：{humidity}%
+            </p>
+
+            <p className='text-xs'>
+              {t('wind_speed')}：{windSpeed} {t('km/h')}
+            </p>
+          </div>
+
+          <div className='flex flex-col items-end'>
+            <p className='text-xl text-black'>
+              {t('weather')}
+            </p>
+
+            <p>
+              {formattedTime}
+            </p>
+
+            <p>
+              {t(`wmo_code.${weatherCode}`)}
+            </p>
+          </div>
         </div>
       </div>
     </div>

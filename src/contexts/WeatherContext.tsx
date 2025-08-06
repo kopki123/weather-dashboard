@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import i18n from '../i18n/i18n';
 
-export type Locale = ('en' | 'zh');
+export type Locale = ('en-US' | 'zh-TW' | 'ja-JP');
 
 export interface WeatherContextType {
   locale: Locale;
@@ -22,7 +22,7 @@ interface WeatherProviderProps {
 }
 
 const storedFavorites = JSON.parse(localStorage.getItem('favoriteCities')!) || [];
-const storedLocale = JSON.parse(localStorage.getItem('locale')!) || 'zh';
+const storedLocale = JSON.parse(localStorage.getItem('locale')!) || 'zh-TW';
 
 export const WeatherProvider: React.FC<WeatherProviderProps> = ({ children }) => {
   const [city, setCity] = useState<string>('');

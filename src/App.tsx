@@ -1,11 +1,12 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   LocationData,
   CurrentWeatherData,
   DailyForecast,
   getLocationData,
-  getWeatherData
+  getWeatherData,
+  HourlyForecast,
 } from './api/weather';
 import { WeatherContext } from './contexts/WeatherContext';
 import SearchBar from './components/SearchBar';
@@ -15,6 +16,7 @@ import Forecast from './components/Forecast';
 import SwitchButton from './components/SwitchButton';
 import FavoriteCities from './components/FavoriteCities';
 import LocaleSelector from './components/LocaleSelector';
+import WeatherChart from './components/WeatherChart';
 
 function App() {
   const { t } = useTranslation();
@@ -33,14 +35,21 @@ function App() {
 
   const [locationData, setLocationData] = useState<LocationData | null>(null);
   const [currentWeather, setCurrentWeather] = useState<CurrentWeatherData | null>(null);
-  const [dailyForecast, setDailyForecast] = useState<DailyForecast | null>(null);
+  const [dailyForecast, setDailyForecast] = useState<DailyForecast>([]);
+  const [hourlyForecast, setHourlyForecast] = useState<HourlyForecast>([]);
+  const [selectedTime, setSelectedTime] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    setCurrentWeather(hourlyForecast.find(({ time }) => time === selectedTime) || null);
+  }, [hourlyForecast, selectedTime]);
 
   const fetchWeatherForCity = useCallback(async (city: string) => {
     setLocationData(null);
     setCurrentWeather(null);
-    setDailyForecast(null);
+    setDailyForecast([]);
+    setHourlyForecast([]);
     setIsLoading(true);
     setError('');
 
@@ -61,8 +70,15 @@ function App() {
         return;
       }
 
-      setCurrentWeather(weatherData.currentWeather);
-      setDailyForecast(weatherData.dailyForecast);
+      const {
+        currentWeather,
+        dailyForecast,
+        hourlyForecast,
+      } = weatherData;
+
+      setSelectedTime(currentWeather.time);
+      setDailyForecast(dailyForecast);
+      setHourlyForecast(hourlyForecast);
     } catch (err) {
       console.error(err);
       setError((err as Error).message);
@@ -128,9 +144,24 @@ function App() {
               </>
             )}
 
-            {dailyForecast && (
+            {hourlyForecast.length > 0 && (
+              <WeatherChart
+                selectedTime={selectedTime}
+                hourlyData={hourlyForecast}
+                onClick={(time) => setSelectedTime(time)}
+              />
+            )}
+
+            {dailyForecast.length > 0 && (
               <Forecast
+                selectedTime={selectedTime}
                 dailyForecast={dailyForecast}
+                onClick={(time) => {
+                    const currentTimestamp = new Date(time).getTime();
+                    const nextHourlyTimeIndex = hourlyForecast.findIndex(({ time }) => (new Date(time).getTime()) - currentTimestamp > 0);
+
+                    setSelectedTime(hourlyForecast[nextHourlyTimeIndex].time);
+                }}
               />
             )}
           </>

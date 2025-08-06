@@ -3,6 +3,6 @@
  * @param celsius - 攝氏溫度
  * @returns 華氏溫度
  */
-export function celsiusToFahrenheit(celsius: number): number {
+export default function celsiusToFahrenheit(celsius: number): number {
   return Math.round((celsius * 9) / 5 + 32);
 }

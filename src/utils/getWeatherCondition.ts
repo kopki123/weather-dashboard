@@ -5,7 +5,7 @@ import weatherCode from './weatherCode.json';
  * @param code - 天氣狀態碼
  * @returns 天氣狀況描述、圖片
  */
-export function getWeatherCondition(code: number): {
+export default function getWeatherCondition(code: number): {
   description: string,
   image: string
 } {

@@ -1,4 +1,4 @@
-import { getWeatherCondition } from '../../utils/getWeatherCondition';
+import getWeatherCondition from '../../utils/getWeatherCondition';
 
 describe('getWeatherCondition 函式', () => {
   it('處理天氣狀態碼 0', () => {
