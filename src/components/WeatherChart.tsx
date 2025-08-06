@@ -7,8 +7,10 @@ import {
   LineElement,
   Filler,
   Legend,
+  ChartOptions,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Context } from 'chartjs-plugin-datalabels';
 import { Line } from 'react-chartjs-2';
 import { HourlyForecast } from '../api/weather';
 import { WeatherContext } from '../contexts/WeatherContext';
@@ -78,7 +80,7 @@ const WeatherChart: React.FC<WeatherChartProps> = ({
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     layout: {
@@ -92,7 +94,7 @@ const WeatherChart: React.FC<WeatherChartProps> = ({
         align: 'end',
         anchor: 'end',
         offset: 2,
-        color: (context: { dataIndex: number; }) => {
+        color: (context: Context) => {
           return selectedDateIndex + context.dataIndex === selectedTimeIndex ? 'black' : '#b5b5b5';
         },
         font: {
@@ -100,7 +102,7 @@ const WeatherChart: React.FC<WeatherChartProps> = ({
           weight: 'bold',
         },
         listeners: {
-          click: function(context: unknown) {
+          click: function(context: Context) {
             onClick(hourlyData[selectedDateIndex + (context as { dataIndex: number }).dataIndex].time);
           }
         }
