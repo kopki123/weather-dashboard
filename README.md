@@ -1,7 +1,7 @@
 # [Weather Dashboard](<https://weather-dashboard-sepia-one.vercel.app/>)
 
 ## 專案描述
-Weather Dashboard是一個用於顯示城市的即時天氣資訊和五日天氣預報的網頁應用程式。
+Weather Dashboard是一個用於顯示城市的即時天氣資訊和天氣預報的網頁應用程式。
 此專案使用 React、TypeScript、Tailwind CSS、Axios 以及 Open-Meteo API，並採用了 React Context 來管理全域狀態。
 提供使用者友好的介面與準確的天氣數據查詢體驗。
 
